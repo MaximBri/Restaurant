@@ -36,8 +36,12 @@ const reset = () => {
 
 <template>
   <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8">
-    <div class="flex items-center gap-2 mb-8">
-      <div v-for="(label, i) in steps" :key="i" class="flex items-center gap-2">
+    <div class="mb-8 flex flex-wrap items-center gap-3 sm:gap-2">
+      <div
+        v-for="(label, i) in steps"
+        :key="i"
+        class="flex items-center gap-2"
+      >
         <div
           class="w-7 h-7 rounded-full flex items-center justify-center text-sm font-bold transition-colors"
           :class="
@@ -60,13 +64,13 @@ const reset = () => {
           </template>
         </div>
         <span
-          class="text-sm hidden sm:block"
+          class="text-sm"
           :class="
             i + 1 === step ? 'text-gray-800 font-medium' : 'text-gray-400'
           "
           >{{ label }}</span
         >
-        <span v-if="i < steps.length - 1" class="text-gray-300 mx-1">›</span>
+        <span v-if="i < steps.length - 1" class="mx-1 hidden text-gray-300 sm:inline">›</span>
       </div>
     </div>
     <HallSelector v-if="step === 1" @next="onHallSelected" />

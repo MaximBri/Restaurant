@@ -1,29 +1,28 @@
 <script setup lang="ts">
-import { onMounted, watch } from 'vue'
-import { useReviewsStore } from '../../stores/reviews'
+import { useReviewsQuery } from '../../composables/useCatalogQueries'
 import LoadingSpinner from '../ui/LoadingSpinner.vue'
 import ErrorMessage from '../ui/ErrorMessage.vue'
 
 const props = defineProps<{ dishId: number }>()
-const store = useReviewsStore()
-
-onMounted(() => store.loadReviews(props.dishId))
-watch(
-  () => props.dishId,
-  (id) => store.loadReviews(id),
-)
+const reviewsQuery = useReviewsQuery(() => props.dishId)
 </script>
 
 <template>
   <section>
     <h3 class="text-lg font-semibold text-gray-800 mb-4">Отзывы</h3>
 
-    <LoadingSpinner v-if="store.loading" message="Загружаем отзывы..." />
-    <ErrorMessage v-else-if="store.error" :message="store.error" />
+    <LoadingSpinner
+      v-if="reviewsQuery.isLoading.value || reviewsQuery.isFetching.value"
+      message="Загружаем отзывы..."
+    />
+    <ErrorMessage
+      v-else-if="reviewsQuery.error.value"
+      :message="reviewsQuery.error.value.message"
+    />
 
-    <div v-else-if="store.reviews.length" class="space-y-4">
+    <div v-else-if="reviewsQuery.data.value?.length" class="space-y-4">
       <div
-        v-for="review in store.reviews"
+        v-for="review in reviewsQuery.data.value"
         :key="review.id"
         class="bg-white rounded-xl border border-gray-100 p-4 flex gap-4"
       >
