@@ -1,0 +1,620 @@
+{
+  "dishes": [
+    {
+      "id": 1,
+      "name": "Борщ",
+      "category": "Супы",
+      "weight": 350,
+      "calories": 180,
+      "price": 320,
+      "description": "Наваристый борщ со свёклой, капустой и говядиной на кости, подаётся со сметаной и пампушками.",
+      "ingredients": [
+        "говядина",
+        "свёкла",
+        "картофель",
+        "капуста",
+        "морковь",
+        "лук",
+        "томатная паста",
+        "сметана"
+      ],
+      "imageUrl": "https://images.unsplash.com/photo-1547592180-85f173990554?w=600",
+      "isSpicy": false,
+      "isChildFriendly": true,
+      "allergens": [
+        "молоко"
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Том Ям",
+      "category": "Супы",
+      "weight": 400,
+      "calories": 210,
+      "price": 590,
+      "description": "Классический тайский суп на кокосовом молоке с креветками, грибами и лемонграссом.",
+      "ingredients": [
+        "креветки",
+        "кокосовое молоко",
+        "грибы шиитаке",
+        "лемонграсс",
+        "перец чили",
+        "галангал",
+        "кафрский лайм"
+      ],
+      "imageUrl": "https://images.unsplash.com/photo-1607330289024-1535c6b4e1c1?w=600",
+      "isSpicy": true,
+      "isChildFriendly": false,
+      "allergens": [
+        "ракообразные",
+        "молоко"
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Греческий салат",
+      "category": "Салаты",
+      "weight": 250,
+      "calories": 160,
+      "price": 380,
+      "description": "Свежие овощи с сыром фета, маслинами и оливковым маслом.",
+      "ingredients": [
+        "помидоры",
+        "огурцы",
+        "болгарский перец",
+        "лук",
+        "маслины",
+        "сыр фета",
+        "оливковое масло"
+      ],
+      "imageUrl": "https://images.unsplash.com/photo-1551248429-40975aa4de74?w=600",
+      "isSpicy": false,
+      "isChildFriendly": true,
+      "allergens": [
+        "молоко"
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Цезарь с курицей",
+      "category": "Салаты",
+      "weight": 300,
+      "calories": 320,
+      "price": 420,
+      "description": "Классический салат Цезарь с куриным филе гриль, соусом и сухариками.",
+      "ingredients": [
+        "куриное филе",
+        "романо",
+        "пармезан",
+        "гренки",
+        "соус цезарь",
+        "яйцо"
+      ],
+      "imageUrl": "https://images.unsplash.com/photo-1512852939750-1305098529bf?w=600",
+      "isSpicy": false,
+      "isChildFriendly": true,
+      "allergens": [
+        "глютен",
+        "яйца",
+        "молоко",
+        "рыба"
+      ]
+    },
+    {
+      "id": 5,
+      "name": "Стейк Рибай",
+      "category": "Горячее",
+      "weight": 350,
+      "calories": 650,
+      "price": 1890,
+      "description": "Мраморная говядина степени прожарки Medium, подаётся с картофельным пюре и соусом демиглас.",
+      "ingredients": [
+        "говядина рибай",
+        "картофель",
+        "сливочное масло",
+        "тимьян",
+        "чеснок",
+        "соус демиглас"
+      ],
+      "imageUrl": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600",
+      "isSpicy": false,
+      "isChildFriendly": false,
+      "allergens": [
+        "молоко"
+      ]
+    },
+    {
+      "id": 6,
+      "name": "Паста Карбонара",
+      "category": "Горячее",
+      "weight": 320,
+      "calories": 480,
+      "price": 550,
+      "description": "Спагетти с соусом из яиц, пармезана и гуанчале.",
+      "ingredients": [
+        "спагетти",
+        "гуанчале",
+        "пармезан",
+        "яйца",
+        "чёрный перец"
+      ],
+      "imageUrl": "https://images.unsplash.com/photo-1612874742237-6526221588e3?w=600",
+      "isSpicy": false,
+      "isChildFriendly": true,
+      "allergens": [
+        "глютен",
+        "яйца",
+        "молоко"
+      ]
+    },
+    {
+      "id": 7,
+      "name": "Острые куриные крылья",
+      "category": "Горячее",
+      "weight": 400,
+      "calories": 520,
+      "price": 490,
+      "description": "Куриные крылышки в остром маринаде BBQ, запечённые до хрустящей корочки.",
+      "ingredients": [
+        "куриные крылья",
+        "соус BBQ",
+        "перец чили",
+        "чеснок",
+        "паприка",
+        "мёд"
+      ],
+      "imageUrl": "https://images.unsplash.com/photo-1567620832903-9fc6debc209f?w=600",
+      "isSpicy": true,
+      "isChildFriendly": false,
+      "allergens": []
+    },
+    {
+      "id": 8,
+      "name": "Тирамису",
+      "category": "Десерты",
+      "weight": 150,
+      "calories": 380,
+      "price": 320,
+      "description": "Классический итальянский десерт с маскарпоне, савоярди и кофейной пропиткой.",
+      "ingredients": [
+        "маскарпоне",
+        "савоярди",
+        "эспрессо",
+        "яйца",
+        "сахар",
+        "какао"
+      ],
+      "imageUrl": "https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?w=600",
+      "isSpicy": false,
+      "isChildFriendly": false,
+      "allergens": [
+        "глютен",
+        "яйца",
+        "молоко"
+      ]
+    },
+    {
+      "id": 9,
+      "name": "Панна котта",
+      "category": "Десерты",
+      "weight": 130,
+      "calories": 290,
+      "price": 280,
+      "description": "Нежный сливочный десерт с ягодным соусом.",
+      "ingredients": [
+        "сливки",
+        "желатин",
+        "сахар",
+        "ваниль",
+        "ягоды"
+      ],
+      "imageUrl": "https://images.unsplash.com/photo-1488477181946-6428a0291777?w=600",
+      "isSpicy": false,
+      "isChildFriendly": true,
+      "allergens": [
+        "молоко"
+      ]
+    },
+    {
+      "id": 10,
+      "name": "Маргарита",
+      "category": "Пицца",
+      "weight": 500,
+      "calories": 750,
+      "price": 620,
+      "description": "Классическая пицца с томатным соусом, моцареллой и свежим базиликом.",
+      "ingredients": [
+        "тесто",
+        "томатный соус",
+        "моцарелла",
+        "базилик",
+        "оливковое масло"
+      ],
+      "imageUrl": "https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=600",
+      "isSpicy": false,
+      "isChildFriendly": true,
+      "allergens": [
+        "глютен",
+        "молоко"
+      ]
+    },
+    {
+      "id": 11,
+      "name": "Пепперони",
+      "category": "Пицца",
+      "weight": 550,
+      "calories": 880,
+      "price": 720,
+      "description": "Острая пицца с пепперони и моцареллой.",
+      "ingredients": [
+        "тесто",
+        "томатный соус",
+        "моцарелла",
+        "пепперони"
+      ],
+      "imageUrl": "https://images.unsplash.com/photo-1628840042765-356cda07504e?w=600",
+      "isSpicy": true,
+      "isChildFriendly": false,
+      "allergens": [
+        "глютен",
+        "молоко"
+      ]
+    },
+    {
+      "id": 12,
+      "name": "Лимонад домашний",
+      "category": "Напитки",
+      "weight": 400,
+      "calories": 80,
+      "price": 220,
+      "description": "Освежающий лимонад из свежих лимонов с мятой.",
+      "ingredients": [
+        "лимон",
+        "мята",
+        "сахарный сироп",
+        "газированная вода"
+      ],
+      "imageUrl": "https://images.unsplash.com/photo-1621263764928-df1444c5e859?w=600",
+      "isSpicy": false,
+      "isChildFriendly": true,
+      "allergens": []
+    }
+  ],
+  "reviews": [
+    {
+      "id": 1,
+      "dishId": 1,
+      "author": "Анна К.",
+      "text": "Очень вкусный борщ, напомнил бабушкин! Густой, наваристый, пампушки просто тают во рту.",
+      "photoUrl": "https://i.pravatar.cc/80?img=1",
+      "rating": 5
+    },
+    {
+      "id": 2,
+      "dishId": 1,
+      "author": "Михаил П.",
+      "text": "Хороший борщ, но мне показалось немного пресноватым. В целом доволен.",
+      "photoUrl": "https://i.pravatar.cc/80?img=2",
+      "rating": 4
+    },
+    {
+      "id": 3,
+      "dishId": 2,
+      "author": "Светлана М.",
+      "text": "Обожаю Том Ям! Здесь он приготовлен идеально — и острый, и ароматный.",
+      "photoUrl": "https://i.pravatar.cc/80?img=3",
+      "rating": 5
+    },
+    {
+      "id": 4,
+      "dishId": 2,
+      "author": "Дмитрий В.",
+      "text": "Острее чем ожидал, но зато очень ароматный. Порция большая.",
+      "photoUrl": "https://i.pravatar.cc/80?img=4",
+      "rating": 4
+    },
+    {
+      "id": 5,
+      "dishId": 3,
+      "author": "Ольга Н.",
+      "text": "Свежайшие овощи, много феты. Отличный выбор для лёгкого обеда!",
+      "photoUrl": "https://i.pravatar.cc/80?img=5",
+      "rating": 5
+    },
+    {
+      "id": 6,
+      "dishId": 4,
+      "author": "Алексей Р.",
+      "text": "Цезарь как цезарь. Курица сочная, соус вкусный, но гренок маловато.",
+      "photoUrl": "https://i.pravatar.cc/80?img=6",
+      "rating": 4
+    },
+    {
+      "id": 7,
+      "dishId": 5,
+      "author": "Игорь Т.",
+      "text": "Стейк просто великолепен! Мраморность отличная, прожарка Medium идеальная.",
+      "photoUrl": "https://i.pravatar.cc/80?img=7",
+      "rating": 5
+    },
+    {
+      "id": 8,
+      "dishId": 5,
+      "author": "Наталья С.",
+      "text": "Дорогой, но того стоит. Пюре нежнейшее, соус насыщенный.",
+      "photoUrl": "https://i.pravatar.cc/80?img=8",
+      "rating": 5
+    },
+    {
+      "id": 9,
+      "dishId": 6,
+      "author": "Павел Д.",
+      "text": "Паста al dente, соус кремовый. Отличная карбонара!",
+      "photoUrl": "https://i.pravatar.cc/80?img=9",
+      "rating": 5
+    },
+    {
+      "id": 10,
+      "dishId": 7,
+      "author": "Кирилл Ж.",
+      "text": "Крылышки огонь! В прямом смысле. Берите только если любите острое.",
+      "photoUrl": "https://i.pravatar.cc/80?img=10",
+      "rating": 5
+    },
+    {
+      "id": 11,
+      "dishId": 8,
+      "author": "Виктория Л.",
+      "text": "Тирамису нежнейшее, кофейный аромат насыщенный. Лучший десерт в меню!",
+      "photoUrl": "https://i.pravatar.cc/80?img=11",
+      "rating": 5
+    },
+    {
+      "id": 12,
+      "dishId": 10,
+      "author": "Евгений Б.",
+      "text": "Простая и вкусная Маргарита. Тесто тонкое, хрустящее.",
+      "photoUrl": "https://i.pravatar.cc/80?img=12",
+      "rating": 4
+    }
+  ],
+  "halls": [
+    {
+      "id": 1,
+      "name": "Основной зал",
+      "description": "Просторный зал с живой музыкой по вечерам",
+      "imageUrl": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600"
+    },
+    {
+      "id": 2,
+      "name": "VIP-зал",
+      "description": "Уютный зал для особых случаев",
+      "imageUrl": "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=600"
+    },
+    {
+      "id": 3,
+      "name": "Летняя терраса",
+      "description": "Открытая терраса с видом на сад",
+      "imageUrl": "https://images.unsplash.com/photo-1533777857889-4be7c70b33f7?w=600"
+    }
+  ],
+  "tables": [
+    {
+      "id": 1,
+      "hallId": 1,
+      "number": 1,
+      "seats": 2,
+      "x": 10,
+      "y": 10
+    },
+    {
+      "id": 2,
+      "hallId": 1,
+      "number": 2,
+      "seats": 2,
+      "x": 30,
+      "y": 10
+    },
+    {
+      "id": 3,
+      "hallId": 1,
+      "number": 3,
+      "seats": 4,
+      "x": 50,
+      "y": 10
+    },
+    {
+      "id": 4,
+      "hallId": 1,
+      "number": 4,
+      "seats": 4,
+      "x": 70,
+      "y": 10
+    },
+    {
+      "id": 5,
+      "hallId": 1,
+      "number": 5,
+      "seats": 2,
+      "x": 10,
+      "y": 35
+    },
+    {
+      "id": 6,
+      "hallId": 1,
+      "number": 6,
+      "seats": 6,
+      "x": 35,
+      "y": 35
+    },
+    {
+      "id": 7,
+      "hallId": 1,
+      "number": 7,
+      "seats": 4,
+      "x": 65,
+      "y": 35
+    },
+    {
+      "id": 8,
+      "hallId": 1,
+      "number": 8,
+      "seats": 2,
+      "x": 10,
+      "y": 65
+    },
+    {
+      "id": 9,
+      "hallId": 1,
+      "number": 9,
+      "seats": 4,
+      "x": 35,
+      "y": 65
+    },
+    {
+      "id": 10,
+      "hallId": 1,
+      "number": 10,
+      "seats": 8,
+      "x": 65,
+      "y": 65
+    },
+    {
+      "id": 11,
+      "hallId": 2,
+      "number": 1,
+      "seats": 2,
+      "x": 15,
+      "y": 20
+    },
+    {
+      "id": 12,
+      "hallId": 2,
+      "number": 2,
+      "seats": 4,
+      "x": 50,
+      "y": 20
+    },
+    {
+      "id": 13,
+      "hallId": 2,
+      "number": 3,
+      "seats": 6,
+      "x": 15,
+      "y": 55
+    },
+    {
+      "id": 14,
+      "hallId": 2,
+      "number": 4,
+      "seats": 4,
+      "x": 50,
+      "y": 55
+    },
+    {
+      "id": 15,
+      "hallId": 3,
+      "number": 1,
+      "seats": 2,
+      "x": 10,
+      "y": 15
+    },
+    {
+      "id": 16,
+      "hallId": 3,
+      "number": 2,
+      "seats": 2,
+      "x": 35,
+      "y": 15
+    },
+    {
+      "id": 17,
+      "hallId": 3,
+      "number": 3,
+      "seats": 4,
+      "x": 60,
+      "y": 15
+    },
+    {
+      "id": 18,
+      "hallId": 3,
+      "number": 4,
+      "seats": 4,
+      "x": 10,
+      "y": 50
+    },
+    {
+      "id": 19,
+      "hallId": 3,
+      "number": 5,
+      "seats": 6,
+      "x": 45,
+      "y": 50
+    }
+  ],
+  "bookings": [
+    {
+      "id": 1,
+      "tableId": 3,
+      "hallId": 1,
+      "date": "2026-03-15",
+      "guestName": "Иван Иванов",
+      "phone": "+7 900 000-00-00",
+      "guestsCount": 3
+    },
+    {
+      "id": 2,
+      "tableId": 6,
+      "hallId": 1,
+      "date": "2026-03-15",
+      "guestName": "Мария Петрова",
+      "phone": "+7 911 111-11-11",
+      "guestsCount": 5
+    },
+    {
+      "tableId": 6,
+      "hallId": 1,
+      "date": "2026-03-18",
+      "guestName": "Петя Васечкин",
+      "phone": "123131231231",
+      "guestsCount": 6,
+      "id": 3
+    },
+    {
+      "tableId": 2,
+      "hallId": 1,
+      "date": "2026-03-17",
+      "guestName": "dfgd",
+      "phone": "12313131231",
+      "guestsCount": 2,
+      "id": 4
+    },
+    {
+      "tableId": 2,
+      "hallId": 1,
+      "date": "2026-03-26",
+      "guestName": "123",
+      "phone": "123",
+      "guestsCount": 1,
+      "id": 5
+    },
+    {
+      "tableId": 9,
+      "hallId": 1,
+      "date": "2026-03-27",
+      "guestName": "1232",
+      "phone": "79014719575",
+      "guestsCount": 4,
+      "id": 6
+    },
+    {
+      "tableId": 9,
+      "hallId": 1,
+      "date": "2026-03-26",
+      "guestName": "Максим Брызгалов",
+      "phone": "79014719575",
+      "guestsCount": 4,
+      "id": 7
+    }
+  ]
+}
