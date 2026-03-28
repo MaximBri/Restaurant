@@ -14,7 +14,9 @@ import { closeDb, getDb } from '../src/db/index.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const sourcePath = path.resolve(__dirname, '../../client/db.json');
+const sourcePath = process.env.STATIC_DATA_PATH
+  ? path.resolve(process.env.STATIC_DATA_PATH)
+  : path.resolve(__dirname, '../../client/db.json');
 
 async function syncIdentitySequence(tx, tableName, columnName = 'id') {
   await tx.execute(
