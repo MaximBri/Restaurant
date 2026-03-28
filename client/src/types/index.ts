@@ -13,6 +13,24 @@ export interface Dish {
   allergens: string[]
 }
 
+export interface AuthUser {
+  id: string
+  email: string
+  name: string
+  role: 'ADMIN' | 'USER'
+}
+
+export interface RegisterPayload {
+  email: string
+  password: string
+  name: string
+}
+
+export interface LoginPayload {
+  email: string
+  password: string
+}
+
 export interface Review {
   id: number
   dishId: number
@@ -46,6 +64,21 @@ export interface Booking {
   guestName: string
   phone: string
   guestsCount: number
+}
+
+export interface AdminBooking {
+  id: number
+  userId: string | null
+  tableId: number
+  hallId: number
+  date: string
+  guestName: string
+  phone: string
+  guestsCount: number
+  hallName: string
+  tableNumber: number
+  creatorName: string | null
+  creatorEmail: string | null
 }
 
 export interface DishFilters {

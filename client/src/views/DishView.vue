@@ -1,18 +1,14 @@
 <script setup lang="ts">
-import { onMounted, watch } from 'vue'
-import { useDishesStore } from '../stores/dishes'
+import { computed } from 'vue'
+
+import { useDishQuery } from '../composables/useCatalogQueries'
 import ReviewList from '../components/dish/ReviewList.vue'
 import LoadingSpinner from '../components/ui/LoadingSpinner.vue'
 import ErrorMessage from '../components/ui/ErrorMessage.vue'
 
 const props = defineProps<{ id: string }>()
-const store = useDishesStore()
-
-onMounted(() => store.loadDish(Number(props.id)))
-watch(
-  () => props.id,
-  (id) => store.loadDish(Number(id)),
-)
+const dishId = computed(() => Number(props.id))
+const dishQuery = useDishQuery(dishId)
 </script>
 
 <template>
@@ -24,44 +20,47 @@ watch(
       ← Вернуться в меню
     </RouterLink>
 
-    <LoadingSpinner v-if="store.loading" message="Загружаем блюдо..." />
+    <LoadingSpinner
+      v-if="dishQuery.isLoading.value || dishQuery.isFetching.value"
+      message="Загружаем блюдо..."
+    />
     <ErrorMessage
-      v-else-if="store.error"
-      :message="store.error"
-      :on-retry="() => store.loadDish(Number(id))"
+      v-else-if="dishQuery.error.value"
+      :message="dishQuery.error.value.message"
+      :on-retry="dishQuery.refetch"
     />
 
-    <template v-else-if="store.currentDish">
+    <template v-else-if="dishQuery.data.value">
       <div
         class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-8"
       >
         <div class="md:flex">
-          <div class="md:w-2/5 aspect-4/3 md:aspect-auto overflow-hidden">
+          <div class="aspect-4/3 overflow-hidden md:w-2/5 md:aspect-auto">
             <img
-              :src="store.currentDish.imageUrl"
-              :alt="store.currentDish.name"
+              :src="dishQuery.data.value.imageUrl"
+              :alt="dishQuery.data.value.name"
               class="w-full h-full object-cover"
             />
           </div>
           <div class="md:w-3/5 p-6 md:p-8 flex flex-col">
-            <div class="flex items-start justify-between gap-4 mb-2">
+            <div class="mb-2 flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
               <div>
                 <span
                   class="text-xs font-medium text-amber-700 uppercase tracking-wide"
                 >
-                  {{ store.currentDish.category }}
+                  {{ dishQuery.data.value.category }}
                 </span>
-                <h1 class="text-2xl font-bold text-gray-900 mt-1">
-                  {{ store.currentDish.name }}
+                <h1 class="mt-1 text-2xl font-bold text-gray-900 sm:text-3xl">
+                  {{ dishQuery.data.value.name }}
                 </h1>
               </div>
-              <div class="text-2xl font-bold text-amber-700 shrink-0">
-                {{ store.currentDish.price }} ₽
+              <div class="shrink-0 text-xl font-bold text-amber-700 sm:text-2xl">
+                {{ dishQuery.data.value.price }} ₽
               </div>
             </div>
             <div class="flex flex-wrap gap-2 my-3">
               <span
-                v-if="store.currentDish.isSpicy"
+                v-if="dishQuery.data.value.isSpicy"
                 class="flex gap-2 bg-red-100 text-red-700 text-xs px-3 py-1 rounded-full font-medium"
               >
                 <img
@@ -73,7 +72,7 @@ watch(
                 Острое
               </span>
               <span
-                v-if="store.currentDish.isChildFriendly"
+                v-if="dishQuery.data.value.isChildFriendly"
                 class="flex gap-2 bg-green-100 text-green-700 text-xs px-3 py-1 rounded-full font-medium"
               >
                 <img
@@ -86,18 +85,18 @@ watch(
               </span>
             </div>
             <p class="text-gray-600 text-sm leading-relaxed mb-4">
-              {{ store.currentDish.description }}
+              {{ dishQuery.data.value.description }}
             </p>
-            <div class="grid grid-cols-2 gap-3 mb-4">
+            <div class="mb-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
               <div class="bg-amber-50 rounded-lg p-3 text-center">
                 <div class="text-lg font-bold text-amber-800">
-                  {{ store.currentDish.weight }} г
+                  {{ dishQuery.data.value.weight }} г
                 </div>
                 <div class="text-xs text-amber-600">Вес порции</div>
               </div>
               <div class="bg-amber-50 rounded-lg p-3 text-center">
                 <div class="text-lg font-bold text-amber-800">
-                  {{ store.currentDish.calories }} ккал
+                  {{ dishQuery.data.value.calories }} ккал
                 </div>
                 <div class="text-xs text-amber-600">Калорийность</div>
               </div>
@@ -106,7 +105,7 @@ watch(
               <h3 class="text-sm font-semibold text-gray-700 mb-2">Состав</h3>
               <div class="flex flex-wrap gap-2">
                 <span
-                  v-for="ing in store.currentDish.ingredients"
+                  v-for="ing in dishQuery.data.value.ingredients"
                   :key="ing"
                   class="bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded-full"
                 >
@@ -114,7 +113,7 @@ watch(
                 </span>
               </div>
             </div>
-            <div v-if="store.currentDish.allergens.length">
+            <div v-if="dishQuery.data.value.allergens.length">
               <h3 class="flex gap-2 text-sm font-semibold text-gray-700 mb-2">
                 <img
                   src="/icons/caution.svg"
@@ -126,7 +125,7 @@ watch(
               </h3>
               <div class="flex flex-wrap gap-2">
                 <span
-                  v-for="allergen in store.currentDish.allergens"
+                  v-for="allergen in dishQuery.data.value.allergens"
                   :key="allergen"
                   class="bg-orange-100 text-orange-700 text-xs px-2 py-1 rounded-full"
                 >
@@ -141,7 +140,7 @@ watch(
           </div>
         </div>
       </div>
-      <ReviewList :dish-id="store.currentDish.id" />
+      <ReviewList :dish-id="dishQuery.data.value.id" />
     </template>
   </div>
 </template>

@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import { useBookingStore } from '../../stores/booking'
+import { ref } from 'vue'
+
+import { useHallsQuery } from '../../composables/useCatalogQueries'
 import LoadingSpinner from '../ui/LoadingSpinner.vue'
 import ErrorMessage from '../ui/ErrorMessage.vue'
 
@@ -8,12 +9,10 @@ const emit = defineEmits<{
   next: [hallId: number, date: string]
 }>()
 
-const store = useBookingStore()
 const selectedHallId = ref<number | null>(null)
 const selectedDate = ref('')
 const today = new Date().toISOString().split('T')[0]
-
-onMounted(() => store.loadHalls())
+const hallsQuery = useHallsQuery()
 
 const next = () => {
   if (selectedHallId.value && selectedDate.value) {
@@ -27,11 +26,14 @@ const next = () => {
     <h3 class="text-lg font-semibold text-gray-800">
       Шаг 1: Выберите зал и дату
     </h3>
-    <LoadingSpinner v-if="store.loading" message="Загружаем залы..." />
+    <LoadingSpinner
+      v-if="hallsQuery.isLoading.value || hallsQuery.isFetching.value"
+      message="Загружаем залы..."
+    />
     <ErrorMessage
-      v-else-if="store.error"
-      :message="store.error"
-      :on-retry="store.loadHalls"
+      v-else-if="hallsQuery.error.value"
+      :message="hallsQuery.error.value.message"
+      :on-retry="hallsQuery.refetch"
     />
     <template v-else>
       <div>
@@ -49,7 +51,7 @@ const next = () => {
         <label class="block text-sm font-medium text-gray-700 mb-2">Зал</label>
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
           <button
-            v-for="hall in store.halls"
+            v-for="hall in hallsQuery.data.value"
             :key="hall.id"
             @click="selectedHallId = hall.id"
             class="rounded-xl overflow-hidden border-2 text-left transition-all"
