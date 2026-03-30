@@ -1,3 +1,5 @@
+import type { FastifyInstance } from 'fastify';
+
 import {
   createBookingRecord,
   getDishById,
@@ -8,6 +10,7 @@ import {
   listTablesByHall,
 } from '../services/catalog-service.js';
 import { AppError } from '../lib/errors.js';
+import type { BookingPayload, DishFilters } from '../types.js';
 
 const dishQuerySchema = {
   type: 'object',
@@ -52,7 +55,28 @@ const bookingBodySchema = {
   },
 };
 
-function normalizePhone(value) {
+type DishQuerystring = Omit<DishFilters, 'excludeAllergens'> & {
+  excludeAllergens?: string | string[];
+};
+
+type IdParams = {
+  id: number;
+};
+
+type DishReviewsQuery = {
+  dishId: number;
+};
+
+type HallTablesQuery = {
+  hallId: number;
+};
+
+type BookingsQuery = {
+  hallId: number;
+  date: string;
+};
+
+function normalizePhone(value: string): string {
   const trimmed = value.trim();
   const normalized = trimmed.replace(/[()\s-]/g, '');
 
@@ -67,7 +91,7 @@ function normalizePhone(value) {
   return normalized;
 }
 
-function validatePhone(value) {
+function validatePhone(value: string): string {
   const normalized = normalizePhone(value);
 
   if (!/^(\+7|7)\d{10}$/.test(normalized)) {
@@ -77,7 +101,7 @@ function validatePhone(value) {
   return normalized;
 }
 
-function normalizeAllergens(value) {
+function normalizeAllergens(value?: string | string[]): string[] {
   if (!value) return [];
   if (Array.isArray(value)) return value;
   return value
@@ -86,8 +110,8 @@ function normalizeAllergens(value) {
     .filter(Boolean);
 }
 
-export async function catalogRoutes(app) {
-  app.get(
+export async function catalogRoutes(app: FastifyInstance): Promise<void> {
+  app.get<{ Querystring: DishQuerystring }>(
     '/dishes',
     {
       schema: {
@@ -113,7 +137,7 @@ export async function catalogRoutes(app) {
     },
   );
 
-  app.get(
+  app.get<{ Params: IdParams }>(
     '/dishes/:id',
     {
       schema: {
@@ -131,7 +155,7 @@ export async function catalogRoutes(app) {
     async (request) => getDishById(app.db, request.params.id),
   );
 
-  app.get(
+  app.get<{ Querystring: DishReviewsQuery }>(
     '/reviews',
     {
       schema: {
@@ -160,7 +184,7 @@ export async function catalogRoutes(app) {
     async () => listHalls(app.db),
   );
 
-  app.get(
+  app.get<{ Querystring: HallTablesQuery }>(
     '/tables',
     {
       schema: {
@@ -178,7 +202,7 @@ export async function catalogRoutes(app) {
     async (request) => listTablesByHall(app.db, request.query.hallId),
   );
 
-  app.get(
+  app.get<{ Querystring: BookingsQuery }>(
     '/bookings',
     {
       schema: {
@@ -197,7 +221,7 @@ export async function catalogRoutes(app) {
     async (request) => listBookings(app.db, request.query.hallId, request.query.date),
   );
 
-  app.post(
+  app.post<{ Body: BookingPayload }>(
     '/bookings',
     {
       schema: {

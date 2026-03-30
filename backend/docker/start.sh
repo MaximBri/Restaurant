@@ -1,6 +1,6 @@
 #!/bin/sh
 set -eu
 
-node scripts/migrate.js
-node scripts/seed-admin.js
-node src/server.js
+node dist/scripts/migrate.js
+node dist/scripts/seed-admin.js
+node dist/src/server.js

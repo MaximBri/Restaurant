@@ -1,12 +1,13 @@
 import fastifySwagger from '@fastify/swagger';
 import fastifySwaggerUi from '@fastify/swagger-ui';
+import type { FastifyInstance } from 'fastify';
 
-export async function registerSwagger(app) {
+export async function registerSwagger(app: FastifyInstance): Promise<void> {
   await app.register(fastifySwagger, {
     openapi: {
       openapi: '3.0.3',
       info: {
-        title: 'Web Laba 1 API',
+        title: 'Web Laba API',
         description: 'API для клиентского приложения и панели администратора',
         version: '1.0.0',
       },

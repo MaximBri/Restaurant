@@ -1,4 +1,5 @@
 import Fastify from 'fastify';
+import type { FastifyInstance } from 'fastify';
 
 import { getEnv } from './config/env.js';
 import { getDb } from './db/index.js';
@@ -11,7 +12,7 @@ import { adminRoutes } from './routes/admin.js';
 import { catalogRoutes } from './routes/catalog.js';
 import { healthRoutes } from './routes/health.js';
 
-export async function buildApp() {
+export async function buildApp(): Promise<{ app: FastifyInstance; env: ReturnType<typeof getEnv> }> {
   const env = getEnv();
   const db = getDb();
 

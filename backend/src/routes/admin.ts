@@ -1,6 +1,12 @@
+import type { FastifyInstance } from 'fastify';
+
 import { deleteBookingRecord, listAdminBookings } from '../services/catalog-service.js';
 
-export async function adminRoutes(app) {
+type BookingParams = {
+  id: number;
+};
+
+export async function adminRoutes(app: FastifyInstance): Promise<void> {
   app.get(
     '/bookings',
     {
@@ -14,7 +20,7 @@ export async function adminRoutes(app) {
     async () => listAdminBookings(app.db),
   );
 
-  app.delete(
+  app.delete<{ Params: BookingParams }>(
     '/bookings/:id',
     {
       onRequest: [app.requireAdmin],

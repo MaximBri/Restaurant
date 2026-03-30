@@ -1,7 +1,7 @@
 import { buildApp } from './app.js';
 import { closeDb } from './db/index.js';
 
-async function start() {
+async function start(): Promise<void> {
   const { app, env } = await buildApp();
 
   try {

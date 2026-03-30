@@ -2,7 +2,7 @@ import { migrate } from 'drizzle-orm/node-postgres/migrator';
 
 import { getDb, closeDb } from '../src/db/index.js';
 
-async function run() {
+async function run(): Promise<void> {
   try {
     const db = getDb();
     await migrate(db, {

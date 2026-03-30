@@ -5,7 +5,7 @@ import { getDb, closeDb } from '../src/db/index.js';
 import { usersTable } from '../src/db/schema.js';
 import { hashPassword } from '../src/utils/password.js';
 
-async function run() {
+async function run(): Promise<void> {
   const env = getEnv();
   const db = getDb();
 

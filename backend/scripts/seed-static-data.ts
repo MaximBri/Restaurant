@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { sql } from 'drizzle-orm';
+import type { InferInsertModel } from 'drizzle-orm';
 
 import {
   bookingsTable,
@@ -18,7 +19,19 @@ const sourcePath = process.env.STATIC_DATA_PATH
   ? path.resolve(process.env.STATIC_DATA_PATH)
   : path.resolve(__dirname, '../../client/db.json');
 
-async function syncIdentitySequence(tx, tableName, columnName = 'id') {
+type StaticData = {
+  dishes: Array<InferInsertModel<typeof dishesTable>>;
+  reviews: Array<InferInsertModel<typeof reviewsTable>>;
+  halls: Array<InferInsertModel<typeof hallsTable>>;
+  tables: Array<InferInsertModel<typeof tablesTable>>;
+  bookings: Array<InferInsertModel<typeof bookingsTable>>;
+};
+
+async function syncIdentitySequence(
+  tx: Parameters<Parameters<ReturnType<typeof getDb>['transaction']>[0]>[0],
+  tableName: string,
+  columnName = 'id',
+): Promise<void> {
   await tx.execute(
     sql.raw(`
       SELECT setval(
@@ -30,10 +43,10 @@ async function syncIdentitySequence(tx, tableName, columnName = 'id') {
   );
 }
 
-async function run() {
+async function run(): Promise<void> {
   const db = getDb();
   const raw = fs.readFileSync(sourcePath, 'utf8');
-  const data = JSON.parse(raw);
+  const data = JSON.parse(raw) as StaticData;
 
   try {
     await db.transaction(async (tx) => {

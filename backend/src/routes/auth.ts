@@ -1,4 +1,6 @@
 import { randomUUID } from 'node:crypto';
+import type { FastifyInstance, FastifyReply } from 'fastify';
+import type { CookieSerializeOptions } from '@fastify/cookie';
 
 import { AppError } from '../lib/errors.js';
 import {
@@ -8,6 +10,7 @@ import {
   revokeRefreshTokenSession,
   rotateRefreshTokenSession,
 } from '../services/auth-service.js';
+import type { AuthJwtUser, LoginPayload, RegisterPayload } from '../types.js';
 
 const registerBodySchema = {
   type: 'object',
@@ -49,7 +52,7 @@ const authSuccessResponseSchema = {
   },
 };
 
-function getCookieOptions(app) {
+function getCookieOptions(app: FastifyInstance): CookieSerializeOptions {
   return {
     httpOnly: true,
     sameSite: 'lax',
@@ -58,14 +61,19 @@ function getCookieOptions(app) {
   };
 }
 
-function setAuthCookies(app, reply, accessToken, refreshToken) {
+function setAuthCookies(
+  app: FastifyInstance,
+  reply: FastifyReply,
+  accessToken: string,
+  refreshToken: string,
+): void {
   const cookieOptions = getCookieOptions(app);
 
   reply.setCookie(app.env.accessTokenCookie, accessToken, cookieOptions);
   reply.setCookie(app.env.refreshTokenCookie, refreshToken, cookieOptions);
 }
 
-function clearAuthCookies(app, reply) {
+function clearAuthCookies(app: FastifyInstance, reply: FastifyReply): void {
   reply.clearCookie(app.env.accessTokenCookie, {
     path: '/',
   });
@@ -74,7 +82,11 @@ function clearAuthCookies(app, reply) {
   });
 }
 
-async function issueAuthTokens(app, reply, user) {
+async function issueAuthTokens(
+  app: FastifyInstance,
+  reply: FastifyReply,
+  user: AuthJwtUser,
+) {
   const accessToken = await reply.jwtSign({
     ...user,
     jti: randomUUID(),
@@ -93,8 +105,8 @@ async function issueAuthTokens(app, reply, user) {
   };
 }
 
-export async function authRoutes(app) {
-  app.post(
+export async function authRoutes(app: FastifyInstance): Promise<void> {
+  app.post<{ Body: RegisterPayload }>(
     '/register',
     {
       schema: {
@@ -128,7 +140,7 @@ export async function authRoutes(app) {
     },
   );
 
-  app.post(
+  app.post<{ Body: LoginPayload }>(
     '/login',
     {
       schema: {

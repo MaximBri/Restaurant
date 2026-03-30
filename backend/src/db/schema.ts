@@ -1,4 +1,5 @@
 import {
+  type AnyPgColumn,
   index,
   boolean,
   date,
@@ -50,7 +51,7 @@ export const reviewsTable = pgTable('reviews', {
   id: integer('id').generatedByDefaultAsIdentity().primaryKey(),
   dishId: integer('dish_id')
     .notNull()
-    .references(() => dishesTable.id, { onDelete: 'cascade' }),
+    .references((): AnyPgColumn => dishesTable.id, { onDelete: 'cascade' }),
   author: text('author').notNull(),
   text: text('text').notNull(),
   photoUrl: text('photo_url').notNull(),
@@ -68,7 +69,7 @@ export const tablesTable = pgTable('tables', {
   id: integer('id').generatedByDefaultAsIdentity().primaryKey(),
   hallId: integer('hall_id')
     .notNull()
-    .references(() => hallsTable.id, { onDelete: 'cascade' }),
+    .references((): AnyPgColumn => hallsTable.id, { onDelete: 'cascade' }),
   number: integer('number').notNull(),
   seats: integer('seats').notNull(),
   x: integer('x').notNull(),
@@ -79,22 +80,22 @@ export const bookingsTable = pgTable(
   'bookings',
   {
     id: integer('id').generatedByDefaultAsIdentity().primaryKey(),
-    userId: uuid('user_id').references(() => usersTable.id, { onDelete: 'set null' }),
+    userId: uuid('user_id').references((): AnyPgColumn => usersTable.id, { onDelete: 'set null' }),
     tableId: integer('table_id')
       .notNull()
-      .references(() => tablesTable.id, { onDelete: 'cascade' }),
+      .references((): AnyPgColumn => tablesTable.id, { onDelete: 'cascade' }),
     hallId: integer('hall_id')
       .notNull()
-      .references(() => hallsTable.id, { onDelete: 'cascade' }),
+      .references((): AnyPgColumn => hallsTable.id, { onDelete: 'cascade' }),
     date: date('date').notNull(),
     guestName: text('guest_name').notNull(),
     phone: text('phone').notNull(),
     guestsCount: integer('guests_count').notNull(),
   },
-  (table) => ({
-    tableDateIdx: index('bookings_table_id_date_idx').on(table.tableId, table.date),
-    userIdIdx: index('bookings_user_id_idx').on(table.userId),
-  }),
+  (table) => [
+    index('bookings_table_id_date_idx').on(table.tableId, table.date),
+    index('bookings_user_id_idx').on(table.userId),
+  ],
 );
 
 export const refreshTokensTable = pgTable(
@@ -103,13 +104,13 @@ export const refreshTokensTable = pgTable(
     id: uuid('id').defaultRandom().primaryKey(),
     userId: uuid('user_id')
       .notNull()
-      .references(() => usersTable.id, { onDelete: 'cascade' }),
+      .references((): AnyPgColumn => usersTable.id, { onDelete: 'cascade' }),
     tokenHash: text('token_hash').notNull().unique(),
     expiresAt: timestamp('expires_at', { withTimezone: true }).notNull(),
     revokedAt: timestamp('revoked_at', { withTimezone: true }),
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
   },
-  (table) => ({
-    userIdIdx: index('refresh_tokens_user_id_idx').on(table.userId),
-  }),
+  (table) => [
+    index('refresh_tokens_user_id_idx').on(table.userId),
+  ],
 );

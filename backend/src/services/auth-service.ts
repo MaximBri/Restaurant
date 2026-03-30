@@ -1,11 +1,16 @@
 import { and, eq, gt, isNull } from 'drizzle-orm';
+import type { InferSelectModel } from 'drizzle-orm';
 
 import { AppError } from '../lib/errors.js';
+import type { Db } from '../db/index.js';
 import { refreshTokensTable, usersTable } from '../db/schema.js';
+import type { AuthJwtUser, LoginPayload, RegisterPayload } from '../types.js';
 import { hashPassword, verifyPassword } from '../utils/password.js';
 import { generateRefreshToken, hashToken } from '../utils/token.js';
 
-export function toPublicUser(user) {
+type UserRecord = InferSelectModel<typeof usersTable>;
+
+export function toPublicUser(user: Pick<UserRecord, 'id' | 'email' | 'name' | 'role'>): AuthJwtUser {
   return {
     id: user.id,
     email: user.email,
@@ -14,7 +19,7 @@ export function toPublicUser(user) {
   };
 }
 
-export async function registerUser(db, payload) {
+export async function registerUser(db: Db, payload: RegisterPayload) {
   const existingUser = await db.query.usersTable.findFirst({
     where: eq(usersTable.email, payload.email),
   });
@@ -44,7 +49,7 @@ export async function registerUser(db, payload) {
   return user;
 }
 
-export async function loginUser(db, payload) {
+export async function loginUser(db: Db, payload: LoginPayload): Promise<AuthJwtUser> {
   const user = await db.query.usersTable.findFirst({
     where: eq(usersTable.email, payload.email),
   });
@@ -62,11 +67,11 @@ export async function loginUser(db, payload) {
   return toPublicUser(user);
 }
 
-function getExpiresAt(ttlMs) {
+function getExpiresAt(ttlMs: number): Date {
   return new Date(Date.now() + ttlMs);
 }
 
-function parseDurationToMs(value) {
+function parseDurationToMs(value: string): number {
   const match = /^(\d+)([smhd])$/.exec(value);
 
   if (!match) {
@@ -74,7 +79,7 @@ function parseDurationToMs(value) {
   }
 
   const amount = Number(match[1]);
-  const unit = match[2];
+  const unit = match[2] as keyof typeof multipliers;
 
   const multipliers = {
     s: 1000,
@@ -86,7 +91,11 @@ function parseDurationToMs(value) {
   return amount * multipliers[unit];
 }
 
-export async function createRefreshTokenSession(db, userId, refreshTokenTtl) {
+export async function createRefreshTokenSession(
+  db: Db,
+  userId: string,
+  refreshTokenTtl: string,
+) {
   const rawToken = generateRefreshToken();
   const tokenHash = hashToken(rawToken);
   const expiresAt = getExpiresAt(parseDurationToMs(refreshTokenTtl));
@@ -103,7 +112,11 @@ export async function createRefreshTokenSession(db, userId, refreshTokenTtl) {
   };
 }
 
-export async function rotateRefreshTokenSession(db, rawToken, refreshTokenTtl) {
+export async function rotateRefreshTokenSession(
+  db: Db,
+  rawToken: string,
+  refreshTokenTtl: string,
+) {
   const tokenHash = hashToken(rawToken);
 
   const [storedToken] = await db
@@ -155,7 +168,7 @@ export async function rotateRefreshTokenSession(db, rawToken, refreshTokenTtl) {
   };
 }
 
-export async function revokeRefreshTokenSession(db, rawToken) {
+export async function revokeRefreshTokenSession(db: Db, rawToken: string): Promise<void> {
   const tokenHash = hashToken(rawToken);
 
   await db

@@ -1,4 +1,6 @@
-export async function healthRoutes(app) {
+import type { FastifyInstance } from 'fastify';
+
+export const healthRoutes = async (app: FastifyInstance): Promise<void> => {
   app.get(
     '/health',
     {
@@ -21,4 +23,4 @@ export async function healthRoutes(app) {
       timestamp: new Date().toISOString(),
     }),
   );
-}
+};

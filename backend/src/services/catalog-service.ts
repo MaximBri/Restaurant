@@ -1,5 +1,7 @@
-import { and, asc, desc, eq, ilike, lte, gte, sql } from 'drizzle-orm';
+import { and, asc, desc, eq, gte, ilike, lte, sql } from 'drizzle-orm';
+import type { InferSelectModel } from 'drizzle-orm';
 
+import type { Db } from '../db/index.js';
 import {
   bookingsTable,
   dishesTable,
@@ -9,19 +11,22 @@ import {
   usersTable,
 } from '../db/schema.js';
 import { AppError } from '../lib/errors.js';
+import type { BookingPayload, DishFilters } from '../types.js';
 
-function normalizeDish(row) {
+type DishRow = InferSelectModel<typeof dishesTable>;
+
+const normalizeDish = (row: DishRow) => {
   return {
     ...row,
     price: Number(row.price),
   };
-}
+};
 
-function toTextArraySql(values) {
+const toTextArraySql = (values: string[]) => {
   return sql`ARRAY[${sql.join(values.map((value) => sql`${value}`), sql`, `)}]::text[]`;
-}
+};
 
-export async function listDishes(db, filters) {
+export const listDishes = async (db: Db, filters: DishFilters) => {
   const conditions = [];
 
   if (filters.search) {
@@ -70,9 +75,9 @@ export async function listDishes(db, filters) {
   });
 
   return rows.map(normalizeDish);
-}
+};
 
-export async function getDishById(db, id) {
+export const getDishById = async (db: Db, id: number) => {
   const dish = await db.query.dishesTable.findFirst({
     where: eq(dishesTable.id, id),
   });
@@ -82,22 +87,22 @@ export async function getDishById(db, id) {
   }
 
   return normalizeDish(dish);
-}
+};
 
-export function listReviewsByDish(db, dishId) {
+export const listReviewsByDish = (db: Db, dishId: number) => {
   return db.query.reviewsTable.findMany({
     where: eq(reviewsTable.dishId, dishId),
     orderBy: [asc(reviewsTable.id)],
   });
-}
+};
 
-export function listHalls(db) {
+export const listHalls = (db: Db) => {
   return db.query.hallsTable.findMany({
     orderBy: [asc(hallsTable.id)],
   });
-}
+};
 
-export async function listTablesByHall(db, hallId) {
+export const listTablesByHall = async (db: Db, hallId: number) => {
   const hall = await db.query.hallsTable.findFirst({
     where: eq(hallsTable.id, hallId),
   });
@@ -110,16 +115,20 @@ export async function listTablesByHall(db, hallId) {
     where: eq(tablesTable.hallId, hallId),
     orderBy: [asc(tablesTable.number)],
   });
-}
+};
 
-export async function listBookings(db, hallId, date) {
+export const listBookings = async (db: Db, hallId: number, date: string) => {
   return db.query.bookingsTable.findMany({
     where: and(eq(bookingsTable.hallId, hallId), eq(bookingsTable.date, date)),
     orderBy: [asc(bookingsTable.tableId), asc(bookingsTable.id)],
   });
-}
+};
 
-export async function createBookingRecord(db, payload, userId) {
+export const createBookingRecord = async (
+  db: Db,
+  payload: BookingPayload,
+  userId: string,
+) => {
   const table = await db.query.tablesTable.findFirst({
     where: eq(tablesTable.id, payload.tableId),
   });
@@ -156,9 +165,9 @@ export async function createBookingRecord(db, payload, userId) {
     .returning();
 
   return booking;
-}
+};
 
-export async function listAdminBookings(db) {
+export const listAdminBookings = async (db: Db) => {
   const rows = await db
     .select({
       id: bookingsTable.id,
@@ -181,9 +190,9 @@ export async function listAdminBookings(db) {
     .orderBy(desc(bookingsTable.date), asc(hallsTable.name), asc(tablesTable.number));
 
   return rows;
-}
+};
 
-export async function deleteBookingRecord(db, bookingId) {
+export const deleteBookingRecord = async (db: Db, bookingId: number) => {
   const [booking] = await db
     .delete(bookingsTable)
     .where(eq(bookingsTable.id, bookingId))
@@ -196,4 +205,4 @@ export async function deleteBookingRecord(db, bookingId) {
   }
 
   return booking;
-}
+};
